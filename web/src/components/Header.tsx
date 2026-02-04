@@ -7,7 +7,7 @@ export const Header = () => {
         <div className="flex flex-row gap-4" style={{ display: 'flex', gap: '20px' }}>
             {user ? (
                 <>
-                    <span>{user.email}</span>
+                    <span>{user.username}</span>
                     <button
                         onClick={logout}
                         className="m-4 inline-block text-blue-500 underline"

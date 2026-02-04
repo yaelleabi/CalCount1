@@ -1,4 +1,6 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from "react"
+import { useAuth } from "./AuthContext";
+
 
 // Notre définition d'une entrée (ce qu'on a vu juste avant)
 export type CalorieEntry = {
@@ -19,10 +21,17 @@ export const CalorieContext = createContext<CalorieContextType>({
 });
 export const CalorieProvider = ({ children }: PropsWithChildren) => {
     const [entries, setEntries] = useState<CalorieEntry[]>([])
+    const { token } = useAuth();
 
     useEffect(() => {
+        if (!token) return;
+
         // On lance l'appel au serveur
-        fetch("http://localhost:3000/calories")
+        fetch("http://localhost:3000/calories", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
             .then((response) => response.json())
             .then((dataFromDb) => {
                 // IMPORTANT : Adaptation des données
@@ -39,7 +48,7 @@ export const CalorieProvider = ({ children }: PropsWithChildren) => {
             .catch((error) => {
                 console.error("❌ Impossible de charger la liste :", error);
             });
-    }, []);
+    }, [token]);
 
     return <CalorieContext.Provider value={{
         entries,
@@ -52,7 +61,8 @@ export const CalorieProvider = ({ children }: PropsWithChildren) => {
             fetch("http://localhost:3000/calories", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(dataToSend),
             })
@@ -89,6 +99,9 @@ export const CalorieProvider = ({ children }: PropsWithChildren) => {
             // 2. On envoie la requête DELETE
             fetch(url, {
                 method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
             })
                 .then((response) => {
                     if (response.ok) {

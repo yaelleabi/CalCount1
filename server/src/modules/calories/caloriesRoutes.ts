@@ -9,18 +9,18 @@ import {
     calorieEntrySchema,
     calorieEntryCollection,
 } from "./caloriesModels";
-// import { authMiddleware, JwtPayload } from "../auth/jwt";
+import { authMiddleware, JwtPayload } from "../auth/jwt";
 
 export const caloriesRoutes = Router();
 
-// caloriesRoutes.use(authMiddleware);
+caloriesRoutes.use(authMiddleware);
 
-// caloriesRoutes.get("/", async (request, response) => {
-//     // const { userId } = (request as any).auth as JwtPayload
-//     // console.log(`User ${userId} is fetching appliances`)
-//     const result = await calorieEntryCollection.find().toArray();
-//     response.json(result);
-// });
+caloriesRoutes.get("/", async (request, response) => {
+    const { userId } = (request as any).auth as JwtPayload
+    console.log(`User ${userId} is fetching calories`)
+    const result = await calorieEntryCollection.find().toArray();
+    response.json(result);
+});
 // Route pour RECUPERER les données (GET) avec un filtre
 caloriesRoutes.get("/", async (request, response) => {
     const { type } = request.query;

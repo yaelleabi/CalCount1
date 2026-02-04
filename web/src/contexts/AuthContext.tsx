@@ -2,54 +2,48 @@ import { createContext, type PropsWithChildren, useContext, useState } from "rea
 
 export type User = {
     id: string;
-    email: string;
-    password: string;
+    username: string;
 };
 
 export type AuthContextType = {
     user?: User;
-    login: (email: string, password: string) => boolean;
+    token?: string;
+    login: (token: string, user: User) => void;
     logout: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
-    login: () => false,
+    login: () => { },
     logout: () => { },
 });
 
-const USERS: User[] = [
-    {
-        id: "1",
-        email: "user@example.com",
-        password: "password123",
-    },
-    {
-        id: "2",
-        email: "admin@example.com",
-        password: "password123",
-    },
-];
-
 export const AuthProvider = ({ children }: PropsWithChildren) => {
+    // Initialize state from localStorage
+    const [user, setUser] = useState<User | undefined>(() => {
+        const savedUser = localStorage.getItem("user");
+        return savedUser ? JSON.parse(savedUser) : undefined;
+    });
 
-    const [user, setUser] = useState<User>();
+    const [token, setToken] = useState<string | undefined>(() => {
+        return localStorage.getItem("jwt_token") || undefined;
+    });
 
     return (
         <AuthContext.Provider
             value={{
                 user,
+                token,
                 logout: () => {
                     setUser(undefined);
+                    setToken(undefined);
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("jwt_token");
                 },
-                login: (email: string, password: string) => {
-                    const user = USERS.find(
-                        (u) => u.email === email && u.password === password
-                    );
-                    if (user) {
-                        setUser(user);
-                        return true;
-                    }
-                    return false;
+                login: (newToken: string, newUser: User) => {
+                    setUser(newUser);
+                    setToken(newToken);
+                    localStorage.setItem("user", JSON.stringify(newUser));
+                    localStorage.setItem("jwt_token", newToken);
                 },
             }}
         >
