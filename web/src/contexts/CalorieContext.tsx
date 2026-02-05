@@ -6,7 +6,7 @@ export type CalorieEntry = {
     label: string;
     calories: number;
     type: "entry" | "expense";
-    createdAt?: string; // ISO string depuis Mongo
+    createdAt?: string;
 };
 
 type CalorieContextType = {
