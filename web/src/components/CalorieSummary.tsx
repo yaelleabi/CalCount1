@@ -81,11 +81,7 @@ export const CalorieSummary = () => {
                 </div>
             </div>
 
-            <div className="mt-6">
-                <button className="btn btn-outline btn-sm" onClick={fetchSummary}>
-                    Rafraîchir
-                </button>
-            </div>
+
         </div>
     );
 };
