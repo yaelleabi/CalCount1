@@ -53,31 +53,54 @@ export const LoginForm = () => {
     };
 
     return (
-        <div style={{ maxWidth: "300px", margin: "auto", padding: "20px" }}>
-            <h2>Connexion</h2>
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: "10px" }}>
-                    <label>Username :</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        style={{ display: "block", width: "100%" }}
-                    />
-                </div>
-                <div style={{ marginBottom: "10px" }}>
-                    <label>Password :</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={{ display: "block", width: "100%" }}
-                    />
-                </div>
-                <button type="submit">Se connecter</button>
-            </form>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="flex justify-center items-center min-h-screen bg-base-200">
+            <div className="card w-full max-w-sm shadow-2xl bg-base-100">
+                <div className="card-body">
+                    <h2 className="card-title justify-center text-2xl font-bold mb-4">Connexion</h2>
+
+                    {error && (
+                        <div className="alert alert-error text-sm py-2 mb-4">
+                            <span>{error}</span>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text">Nom d'utilisateur</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Entrez votre nom d'utilisateur"
+                                className="input input-bordered w-full"
+                                required
+                            />
+                        </div>
+
+                        <div className="form-control w-full mt-4">
+                            <label className="label">
+                                <span className="label-text">Mot de passe</span>
+                            </label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Entrez votre mot de passe"
+                                className="input input-bordered w-full"
+                                required
+                            />
+                        </div>
+
+                        <div className="form-control mt-6">
+                            <button type="submit" className="btn btn-primary to-blue-600">Se connecter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     );
+
 };

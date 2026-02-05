@@ -4,6 +4,10 @@ import { useAuth } from "../contexts/AuthContext";
 export const Header = () => {
     const { user, logout } = useAuth();
 
+    if (!user) {
+        return null;
+    }
+
     return (
         <header className="w-full bg-base-100 shadow-md">
             <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">

@@ -12,10 +12,7 @@ export function RegisterForm() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // Ajuste selon ton projet :
-    // - si tu as VITE_API_URL, garde ça
-    // - sinon remplace par "http://localhost:3000" (ou ton port)
-    const API_URL = import.meta.env.VITE_API_URL || "";
+    const API_URL = "http://localhost:3000";
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -57,7 +54,7 @@ export function RegisterForm() {
                 localStorage.setItem("user", JSON.stringify(data.user));
             }
 
-            navigate("/logs"); // ou "/" selon tes routes
+            navigate("/list"); // ou "/" selon tes routes
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -70,65 +67,76 @@ export function RegisterForm() {
     };
 
     return (
-        <div style={{ maxWidth: 420, margin: "40px auto", padding: 16 }}>
-            <h1>Créer un compte</h1>
 
-            {error && (
-                <div
-                    style={{
-                        background: "#ffe5e5",
-                        border: "1px solid #ffb3b3",
-                        padding: 10,
-                        borderRadius: 8,
-                        marginTop: 12,
-                        marginBottom: 12,
-                    }}
-                >
-                    {error}
+        <div className="flex justify-center items-center min-h-screen bg-base-200">
+            <div className="card w-full max-w-md shadow-2xl bg-base-100">
+                <div className="card-body">
+                    <h2 className="card-title justify-center text-2xl font-bold mb-4">Créer un compte</h2>
+
+                    {error && (
+                        <div className="alert alert-error text-sm py-2 mb-4">
+                            <span>{error}</span>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Nom d'utilisateur</span>
+                            </label>
+                            <input
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                autoComplete="username"
+                                placeholder="ex: yaelle"
+                                className="input input-bordered w-full"
+                                required
+                            />
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Mot de passe</span>
+                            </label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="new-password"
+                                placeholder="minimum 6 caractères"
+                                className="input input-bordered w-full"
+                                required
+                            />
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Confirmer le mot de passe</span>
+                            </label>
+                            <input
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                autoComplete="new-password"
+                                placeholder="retape le mot de passe"
+                                className="input input-bordered w-full"
+                                required
+                            />
+                        </div>
+
+                        <div className="form-control mt-6">
+                            <button type="submit" className="btn btn-primary" disabled={loading}>
+                                {loading ? "Création..." : "S'inscrire"}
+                            </button>
+                        </div>
+                    </form>
+
+                    <p className="text-center mt-4 text-sm">
+                        Déjà un compte ? <Link to="/login" className="link link-primary">Se connecter</Link>
+                    </p>
                 </div>
-            )}
-
-            <form onSubmit={handleSubmit} style={{ display: "grid", gap: 10 }}>
-                <div style={{ display: "grid", gap: 6 }}>
-                    <label>Nom d'utilisateur</label>
-                    <input
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        autoComplete="username"
-                        placeholder="ex: yaelle"
-                    />
-                </div>
-
-                <div style={{ display: "grid", gap: 6 }}>
-                    <label>Mot de passe</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="new-password"
-                        placeholder="minimum 6 caractères"
-                    />
-                </div>
-
-                <div style={{ display: "grid", gap: 6 }}>
-                    <label>Confirmer le mot de passe</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        autoComplete="new-password"
-                        placeholder="retape le mot de passe"
-                    />
-                </div>
-
-                <button type="submit" disabled={loading}>
-                    {loading ? "Création..." : "S'inscrire"}
-                </button>
-            </form>
-
-            <p style={{ marginTop: 12 }}>
-                Déjà un compte ? <Link to="/login">Se connecter</Link>
-            </p>
+            </div>
         </div>
     );
+
 }
