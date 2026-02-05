@@ -3,11 +3,13 @@ import { createContext, type PropsWithChildren, useContext, useState } from "rea
 export type User = {
     id: string;
     username: string;
+    role: "user" | "admin"
 };
 
 export type AuthContextType = {
     user?: User;
     token?: string;
+    role?: "user" | "admin";
     login: (token: string, user: User) => void;
     logout: () => void;
 };

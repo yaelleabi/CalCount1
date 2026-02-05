@@ -3,6 +3,7 @@ import { expressjwt } from "express-jwt"
 
 export type JwtPayload = {
     userId: string;
+    role?: "user" | "admin";
 };
 
 const SECRET_KEY = "12345";

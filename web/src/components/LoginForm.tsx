@@ -4,7 +4,11 @@ import { useAuth } from "../contexts/AuthContext";
 
 type LoginResponse = {
     token: string;
-    // The server currently only returns token, so we construct the user client-side for now
+    user: {
+        id: string;
+        username: string;
+        role: "user" | "admin";
+    };
 };
 
 export const LoginForm = () => {
@@ -34,11 +38,12 @@ export const LoginForm = () => {
 
             const data: LoginResponse = await response.json();
 
-            // Construct a user object since the backend only returns the token
-            const user = { id: "1", username: username }; // infer based on success
-
             // Use context to login (this updates state and localStorage)
-            login(data.token, user);
+            login(data.token, {
+                id: data.user.id,
+                username: data.user.username,
+                role: data.user.role,
+            });
 
             navigate("/list");
 
